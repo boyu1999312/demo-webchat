@@ -1,0 +1,123 @@
+
+.all-div {
+    margin:0 auto;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background: #f2f2f2;
+}
+.top-div {
+    height: 85%;
+}
+.bottom-div {
+    height: 14%;
+}
+.content-div {
+    padding: 10px;
+    height: 100%;
+    overflow-y:auto;
+}
+.state-p {
+    font-size: 2.5em;
+    position: absolute;
+    top: 0%;
+    width: 60%;
+    margin: 0 40%;
+}
+.send-text {
+    width: 75%;
+    height: 40%;
+    font-size: 3em;
+    margin-left: 1%;
+    border-radius: 20px;
+    padding: 5px;
+    overflow: hidden;
+}
+.send-btn {
+    float: right;
+    width: 11%;
+    height: 40%;
+    font-size: 3em;
+    margin-right: 0.5%;
+    margin-left: 0.5%;
+}
+.exit-btn {
+    margin-left: 0.7%;
+    float: left;
+    width: 10%;
+    height: 40%;
+    font-size: 3em;
+}
+.other-div {
+    margin-top: 20px;
+    margin-right: 27%;
+    float: left;
+    font-size: 3em;
+    padding: 10px;
+    color: white;
+    max-width: 65%;
+}
+.my-div {
+    margin-top: 20px;
+    margin-left: 27%;
+    float: right;
+    font-size: 3em;
+    padding: 10px;
+    color: white;
+    width: 90%;
+}
+.name-text {
+    border: 0px;
+    background: #f2f2f2;
+    font-size: 2.5em;
+}
+#sid {
+    padding: 10px;
+    color: black;
+    font-size: 2.5em;
+}
+.equi-span {
+    padding: 10px;
+    float: right;
+    font-size: 2.5em;
+}
+.other-text-span {
+    padding: 15px;
+    display: inline-block;
+    word-wrap:break-word;
+    word-break:break-all;
+    overflow: hidden;
+    border-radius: 20px;
+    background: #01AAED;
+    max-width: 70%;
+    float: left;
+}
+.other-name-span {
+    padding: 15px;
+    background: #01AAED;
+    float: left;
+    border-radius: 10px;
+}
+.my-text-span {
+    padding: 15px;
+    display: inline-block;
+    word-wrap:break-word;
+    word-break:break-all;
+    overflow: hidden;
+    border-radius: 20px;
+    background: #5FB878;
+    max-width: 70%;
+    float: right;
+}
+.my-name-span {
+    padding: 15px;
+    background: #5FB878;
+    float: right;
+    border-radius: 10px;
+}
+.my-nbsp-span {
+    float: right;
+}
+.other-nbsp-span {
+    float: left;
+}

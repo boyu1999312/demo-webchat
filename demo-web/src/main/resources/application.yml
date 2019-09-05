@@ -1,0 +1,19 @@
+server:
+  port: 9400
+
+spring:
+  application:
+    name: demo-web
+  thymeleaf:
+    mode: HTML
+    encoding: UTF-8
+    cache: false
+  redis:
+    host: 127.0.0.1
+    port: 7069
+    database: 1
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8001/eureka/

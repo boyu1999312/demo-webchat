@@ -1,0 +1,26 @@
+server:
+  port: 9301
+
+spring:
+  application:
+    name: user-producer
+  profiles:
+    active: dev
+  sleuth:
+    web:
+      client:
+        enabled: true
+    sampler:
+      probability: 1.0
+  zipkin:
+    base-url: http://localhost:9411
+cu:
+  ip: localhost
+  port: 8001
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${cu.ip}:${cu.port}/eureka/
+  instance:
+    prefer-ip-address: true

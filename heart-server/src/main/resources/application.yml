@@ -1,0 +1,19 @@
+server:
+  port: 11000
+spring:
+  application:
+    name: heart-server
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8001/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream
+feign:
+  hystrix:
+    enabled: true

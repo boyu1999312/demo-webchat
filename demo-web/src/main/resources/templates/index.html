@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Piggy House</title>
+    <title>小猪之家</title>
     <link href="/css/test.css" rel="stylesheet"/>
     <link href="/css/layui/css/layui.css" rel="stylesheet"/>
 </head>
@@ -10,21 +10,30 @@
 
 
     <div id="circle" class="all-div">
-        <br/><br/>
+        <input id="uId" type="hidden" th:value="${userInfo.uId}"/>
         <div id="top-div" class="top-div">
+            <div id="head-div" class="cla-head-div">
+                <p class="state-p">当前状态：<span id="heart"></span></p>
+            </div>
             <div id="content" class="content-div">
 
             </div>
-            <p class="state-p">当前状态：<span id="heart"></span></p>
-            <input id="uId" type="hidden" th:value="${userInfo.uId}"/>
             <div id="bot-div" class="bottom-div">
                 <input id="sid" class="name-text" placeholder="昵称" th:value="${userInfo.uNickname}" disabled="disabled"/>
                 <span id="equipment-span" class="equi-span">当前登录设备：电脑</span>
-                <!--<input id="send-text" class="send-text" placeholder="请输入内容...">&nbsp;&nbsp;-->
-                <textarea id="send-text" rows="1" class="send-text" placeholder="请输入内容..."></textarea>
-                <button id="send-btn" class="send-btn">发送</button>
-                <button id="login-out" class="exit-btn">退出</button>
+
+                <span class="out-send-span">
+                    <textarea id="send-text" rows="1" class="send-text" placeholder="请输入内容..."></textarea>
+                    <button id="send-btn" class="send-btn">发送</button>
+                    <!--<button id="login-out" class="exit-btn">退出</button>-->
+                    <a id="pop-a"><span id="plus-a" class="span-plus-png">&nbsp;<img src="http://kk7qj8.natappfree.cc/images/plus_icon.png" class="span-plus-inner">&nbsp;</img></span></a>
+                    <a onclick="user_exit()"><span class="span-shutdown-png">&nbsp;</span></a>
+                </span>
+                <!--<button id="pop-btn" type="button">弹出框</button>-->
             </div>
+        </div>
+        <div id="pop-img-div" class="cla-pop-img-div">
+            <input accept="image/*,audio/*" type="file"/>
         </div>
     </div>
 
@@ -32,12 +41,6 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="/js/test.js"></script>
     <script src="/js/equipment.js"></script>
-    <script>
-        changeWindow();
-        createWebSocket(wsUrl);
-        sendBtn();
-        sendBtn();
-    </script>
 
 </body>
 </html>

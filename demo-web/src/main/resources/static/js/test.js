@@ -1,12 +1,14 @@
-var lockReconnect = false;//避免重复连接
-var wsUrl = "ws://server.natappfree.cc:33195/webServer/" + 1;
-var ws;
-var tt;
-
-
 //个人信息
 var USER_NICKNAME = $("#sid").val();
 var USER_UID = $("#uId").val();
+
+var lockReconnect = false;//避免重复连接
+var wsUrl = "ws://server.natappfree.cc:39521/webServer/" + USER_UID;
+var ws;
+var tt;
+
+//弹出框状态
+var POP_OPEN = false;
 
 function createWebSocket() {
     try {
@@ -42,8 +44,8 @@ function init() {
             result = JSON.parse(event.data)
             if(result.type == 2){
                 var cla = result.id == USER_UID
-                    ? "<div style='clear:both'><div class='my-div'>" + "<span class='my-name-span'>" + result.nickName + "</span>" + "<span class='my-nbsp-span'>&nbsp;&nbsp;</span>" + "<span class='my-text-span'>" + result.msg + "</span>"+ "</div>"
-                    : "<div style='clear:both'><div class='other-div'>" + "<span class='other-name-span'>" + result.nickName + "</span>" + "<span class='other-nbsp-span'>&nbsp;&nbsp;</span>" + "<span class='other-text-span'>" + result.msg + "</span>"+ "</div>"
+                    ? "<div style='clear:both'><div class='my-div'>" + "<span class='my-name-span'>" + result.nickName + "</span>" + "<span class='my-nbsp-span'>&nbsp;&nbsp;</span>" + "<pre class='my-text-pre'>" + result.msg + "</pre>"+ "</div>"
+                    : "<div style='clear:both'><div class='other-div'>" + "<span class='other-name-span'>" + result.nickName + "</span>" + "<span class='other-nbsp-span'>&nbsp;&nbsp;</span>" + "<pre class='other-text-pre'>" + result.msg + "</pre>"+ "</div>"
                 $("#content").append(cla)
                 var scrollHeight = $('#content').prop("scrollHeight");
                 $('#content').animate({scrollTop:scrollHeight}, 10);
@@ -113,15 +115,42 @@ function sendBtn() {
         }
         ws.send(JSON.stringify(params))
         console.log(JSON.stringify(params))
-        $("#content").append("<div style='clear:both'><div class='my-div'>" + "<span class='my-name-span'>" + USER_NICKNAME + "</span>" + "<span class='my-nbsp-span'>&nbsp;&nbsp;</span>" + "<span class='my-text-span'>" + text + "</span>"+ "</div>")
+        $("#content").append("<div style='clear:both'><div class='my-div'>" + "<span class='my-name-span'>" + USER_NICKNAME + "</span>" + "<span class='my-nbsp-span'>&nbsp;&nbsp;</span>" + "<pre class='my-text-pre'>" + text + "</pre>"+ "</div>")
         $("#send-text").val("")
+
+
+        $("#send-btn").animate({width:'0'}, 200)
+        $("#send-btn").hide(200)
+
+        if(POP_OPEN){
+            var pop = $("#pop-img-div")
+            var content = $("#top-div")
+            content.animate({bottom:'0'})
+            pop.animate({top:'100%'})
+            pop.hide(200)
+            POP_OPEN = false
+        }
+
+        setTimeout(function () {
+            $("#plus-a").show(200)
+            $("#plus-a").animate({width:'190'}, 200)
+        },100)
+
+
         var scrollHeight = $('#content').prop("scrollHeight");
         $('#content').animate({scrollTop:scrollHeight}, 10);
+        $("#send-text").focus();
     })
 }
 
-//退出按钮
-$("#login-out").on("click", function () {
+//输入框点击跳到最下面
+$("#send-text").on("click", function () {
+    var scrollHeight = $('#content').prop("scrollHeight");
+    $('#content').animate({scrollTop:scrollHeight}, 1000);
+})
+
+//退出事件
+function user_exit() {
     $.ajax({
         type: "get",
         datatype: "json",
@@ -135,10 +164,60 @@ $("#login-out").on("click", function () {
             }
         }
     })
-})
+}
 
 //div适应屏幕
 function changeWindow() {
 
     $("#circle").css("height", $(window).height())
 }
+//弹出框按钮
+$("#pop-a").on("click", function () {
+    if(POP_OPEN){
+        $("#send-text").focus()
+    }
+    POP_OPEN = true;
+    var pop = $("#pop-img-div")
+    var content = $("#top-div")
+    content.animate({bottom:'50%'})
+    // var scrollHeight = $('#content').prop("scrollHeight");
+    // $('#content').animate({scrollTop:scrollHeight}, 0);
+    pop.show()
+    pop.animate({top:'50%'})
+})
+//单击content-div
+$("#content").on("click",function () {
+    var pop = $("#pop-img-div")
+    var content = $("#top-div")
+    if(POP_OPEN){
+        content.animate({bottom:'0'})
+        pop.animate({top:'100%'})
+        pop.hide(200)
+        POP_OPEN = false
+    }
+})
+
+//消息按钮弹出与缩回
+$("#send-text").on("input propertychange", function () {
+    if(/^\s*$/.test($(this).val()) || $(this).val() == null){
+        $("#send-btn").animate({width:'0'}, 200)
+        $("#send-btn").hide(200)
+
+        setTimeout(function () {
+            $("#plus-a").show(200)
+            $("#plus-a").animate({width:'190'}, 200)
+        },100)
+    }else {
+        $("#plus-a").animate({width:'0'}, 200)
+        $("#plus-a").hide(200)
+        setTimeout(function () {
+            $("#send-btn").show()
+            $("#send-btn").animate({width:'190'}, 200)
+        },100)
+    }
+})
+
+changeWindow();
+createWebSocket(wsUrl);
+sendBtn();
+sendBtn();

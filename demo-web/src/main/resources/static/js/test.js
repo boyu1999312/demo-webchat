@@ -3,7 +3,7 @@ var USER_NICKNAME = $("#sid").val();
 var USER_UID = $("#uId").val();
 
 var lockReconnect = false;//避免重复连接
-var wsUrl = "ws://server.natappfree.cc:39521/webServer/" + USER_UID;
+var wsUrl = "ws://server.natappfree.cc:41639/webServer/" + USER_UID;
 var ws;
 var tt;
 

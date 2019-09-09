@@ -65,7 +65,12 @@ public class WebSocketServer {
                     sendMessage(msg);
                 }
             }
-            sendMessage("连接成功！");
+            sendMessage(JsonMapper.toJson(
+                    new MsgVo()
+                            .setType(1)
+                            .setMsg("连接成功！")
+                            .setTime(new Date())
+            ));
         }catch (IOException e){
             log.error("websocket 异常");
         }

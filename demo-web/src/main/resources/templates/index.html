@@ -13,8 +13,9 @@
         <input id="uId" type="hidden" th:value="${userInfo.uId}"/>
         <div id="top-div" class="top-div">
             <div id="head-div" class="cla-head-div">
+                <span class="return-span"><span name="return-icon"></span></span>
                 <span class="state-span">当前状态：<span id="heart"></span></span>
-                <span class="user-span">&nbsp;</span>
+                <span class="user-span"><span name="user-icon"></span></span>
             </div>
             <div id="content" class="content-div">
 
@@ -27,19 +28,22 @@
                     <textarea id="send-text" rows="1" class="send-text" placeholder="请输入内容..."></textarea>
                     <button id="send-btn" class="send-btn">发送</button>
                     <!--<button id="login-out" class="exit-btn">退出</button>-->
-                    <a id="pop-a"><span id="plus-a" class="span-plus-png">&nbsp;<img src="http://es5jaj.natappfree.cc/images/plus_icon.png" class="span-plus-inner">&nbsp;</img></span></a>
+                    <a id="pop-a"><span id="plus-a" class="more-span"><span name="more-icon"></span></span></a>
                     <a onclick="user_exit()"><span class="span-shutdown-png">&nbsp;</span></a>
                 </span>
                 <!--<button id="pop-btn" type="button">弹出框</button>-->
             </div>
         </div>
         <div id="pop-img-div" class="cla-pop-img-div">
-            <input accept="image/*,audio/*" type="file"/>
+            <button type="button" class="cla-upload-btn">图片
+                <input id="img-upload" accept="image/*,audio/*" type="file"/>
+            </button>
         </div>
     </div>
 
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="/js/dataFormat.js"></script>
     <script src="/js/test.js"></script>
     <script src="/js/equipment.js"></script>
 

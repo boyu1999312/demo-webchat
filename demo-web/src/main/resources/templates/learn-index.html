@@ -7,16 +7,33 @@
     <link rel="stylesheet" href="http://cdn.ink.sapo.pt/3.1.10/css/ink-flex.css">
     <!-- minified version for production -->
     <link rel="stylesheet" href="http://cdn.ink.sapo.pt/3.1.10/css/ink-flex.min.css">
+    <style>
+        /*选择文件上传input css*/
+        .am-form-file
+        {
+            position:relative;
+            overflow:hidden;
+        }
+        .am-form-file input[type=file]
+        {
+            position:absolute;
+            z-index:1;
+            width:100%;
+            font-size:50rem;
+            opacity:0;
+            cursor:pointer;
+        }
+    </style>
 </head>
 <body>
 
-<div class="ink-grid">
-    <div class="column-group push-center">
-        <div class="all-50">
-            50%
-        </div>
+<li class="am-form-file">
+    <div class="weui-cell__ft">
+        <img id="icon" src="${member.face!''}"class="user-img">
     </div>
-</div>
+    <input id="file1" name="file" type="file" hidefocus="true" onchange="uploadyasuo(this.files,this.id);"accept="image/*">
+</li>
+
 
 
 </body>

@@ -20,11 +20,11 @@ public class MsgVo {
     private String msg;
     private String nickName;
     /**
-     * 消息类型 1是心跳信息 2是普通消息
+     * 消息类型 1是心跳信息 2是普通消息 3是图片信息
      */
     private Integer type;
     /**
      * 发送时间
      */
-    private Date time;
+    private Long time;
 }

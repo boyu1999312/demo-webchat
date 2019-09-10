@@ -1,7 +1,7 @@
 package com.test.demoweb.controller;
 
 
-import com.test.common.constant.Login;
+import com.test.common.constant.LoginFinal;
 import com.test.common.util.CookieUtil;
 import com.test.common.util.Result;
 import com.test.demoweb.service.UserRemote;
@@ -44,7 +44,7 @@ public class ConnectController {
         String jsonHex = cookieMap.get("jsonHex");
         String time = cookieMap.get("time");
 
-        Cookie cookie = new Cookie(Login.COOKIE_LOGIN_TOKEN, jsonHex);
+        Cookie cookie = new Cookie(LoginFinal.COOKIE_LOGIN_TOKEN, jsonHex);
         cookie.setMaxAge(Integer.valueOf(time));
         cookie.setPath("/");
 
@@ -54,7 +54,7 @@ public class ConnectController {
 
     @GetMapping("/loginout")
     public Result loginout(HttpServletRequest request, HttpServletResponse response){
-        Cookie cookie = CookieUtil.getCookie(Login.COOKIE_LOGIN_TOKEN, request);
+        Cookie cookie = CookieUtil.getCookie(LoginFinal.COOKIE_LOGIN_TOKEN, request);
         if(cookie == null){
             return Result.error();
         }

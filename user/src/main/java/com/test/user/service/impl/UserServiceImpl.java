@@ -1,7 +1,7 @@
 package com.test.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.test.common.constant.Login;
+import com.test.common.constant.LoginFinal;
 import com.test.common.entity.UserBean;
 import com.test.common.util.JsonMapper;
 import com.test.common.util.Result;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -58,7 +57,7 @@ public class UserServiceImpl implements UserService {
                 .setUId(
                         userBean.getUId()));
 
-        String md5Json = Login.COOKIE_LOGIN_TOKEN + json + System.currentTimeMillis();
+        String md5Json = LoginFinal.COOKIE_LOGIN_TOKEN + json + System.currentTimeMillis();
         String jsonHex = DigestUtils.md5DigestAsHex(md5Json.getBytes());
         int time = 3600 * 24 * 30;
 

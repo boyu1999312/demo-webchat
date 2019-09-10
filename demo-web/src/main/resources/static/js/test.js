@@ -3,12 +3,15 @@ var USER_NICKNAME = $("#sid").val();
 var USER_UID = $("#uId").val();
 
 var lockReconnect = false;//避免重复连接
-var wsUrl = "ws://server.natappfree.cc:41639/webServer/" + USER_UID;
+var wsUrl = "ws://server.natappfree.cc:36012/webServer/" + USER_UID;
 var ws;
 var tt;
 
 //弹出框状态
 var POP_OPEN = false;
+
+//当前域名
+var localhost = document.domain
 
 function createWebSocket() {
     try {
@@ -42,21 +45,44 @@ function init() {
         var result = null
         try {
             result = JSON.parse(event.data)
-            if(result.type == 2){
-                var cla = result.id == USER_UID
-                    ? "<div style='clear:both'><div class='my-div'>"
-                    + "<span class='my-name-span'>" + result.nickName + "</span>"
-                    + "<span class='my-nbsp-span'>&nbsp;&nbsp;</span>"
-                    + "<pre class='my-text-pre' time='" + timeStamp2String(result.time) + "'>" + result.msg + "</pre>"+ "</div>"
+            var flag = result.id == USER_UID
+            var cla = null
+            console.log("消息类型：" + result.type)
+            switch(result.type){
+                case 2:
+                    console.log("文本")
+                    cla = flag
+                        ? "<div style='clear:both'><div class='my-div'>"
+                        + "<span class='my-name-span'>" + result.nickName + "</span>"
+                        + "<span class='my-nbsp-span'>&nbsp;&nbsp;</span>"
+                        + "<pre class='my-text-pre' time='" + timeStamp2String(result.time) + "'>" + result.msg + "</pre>"+ "</div>"
 
-                    : "<div style='clear:both'><div class='other-div'>"
-                    + "<span class='other-name-span'>" + result.nickName
-                    + "</span>" + "<span class='other-nbsp-span'>&nbsp;&nbsp;</span>"
-                    + "<pre class='other-text-pre' time='" + timeStamp2String(result.time) + "'>" + result.msg + "</pre>"+ "</div>"
+                        : "<div style='clear:both'><div class='other-div'>"
+                        + "<span class='other-name-span'>" + result.nickName
+                        + "</span>" + "<span class='other-nbsp-span'>&nbsp;&nbsp;</span>"
+                        + "<pre class='other-text-pre' time='" + timeStamp2String(result.time) + "'>" + result.msg + "</pre>"+ "</div>"
 
-                $("#content").append(cla)
-                var scrollHeight = $('#content').prop("scrollHeight");
-                $('#content').animate({scrollTop:scrollHeight}, 10);
+                    $("#content").append(cla)
+                    var scrollHeight = $('#content').prop("scrollHeight");
+                    $('#content').animate({scrollTop:scrollHeight}, 10);
+                break;
+                case 3:
+                    console.log("图片")
+                    cla = flag
+                        ? "<div style='clear:both'><div class='my-div'>"
+                        + "<span class='my-name-span'>" + result.nickName + "</span>"
+                        + "<span class='my-nbsp-span'>&nbsp;&nbsp;</span>"
+                        + "<img class='my-img' src='" + "http://" + localhost + result.msg + "' time='" + timeStamp2String(result.time) + "'/></div>"
+
+                        : "<div style='clear:both'><div class='other-div'>"
+                        + "<span class='other-name-span'>" + result.nickName
+                        + "</span>" + "<span class='other-nbsp-span'>&nbsp;&nbsp;</span>"
+                        + "<img class='other-img' src='" + "http://" + localhost + result.msg + "' time='" + timeStamp2String(result.time) + "'/></div>"
+
+                    $("#content").append(cla)
+                    var scrollHeight = $('#content').prop("scrollHeight");
+                    $('#content').animate({scrollTop:scrollHeight}, 10);
+                break;
             }
         }catch (e) {
             console.log(e)
@@ -208,6 +234,9 @@ $("#content").on("click",function () {
 //单击pre(聊天气泡)显示发送时间
 $(document).click(function (e) {
     var $v_id = $(e.target)
+    if($v_id.attr("time") == null || $v_id.attr("time") == ""){
+        return
+    }
     var x = e.pageX
     var y = e.pageY
     var $i = $("<p></p>").text($v_id.attr("time"))
@@ -218,6 +247,9 @@ $(document).click(function (e) {
         "left": x,
         "position": "absolute",
         "color": "white",
+        "background": "black",
+        "border-radius": "15px",
+        "padding": "10px",
         "cursor":"default",
         "-moz-user-select": "none",
         "-webkit-user-select": "none",
@@ -226,7 +258,7 @@ $(document).click(function (e) {
         "user-select": "none"
     })
     $("body").append($i)
-    $i.animate( {"top":y-180,"opacity":0}, 5000, function(){$i.remove();});     //动画消除
+    $i.animate( {"top":y-180,"opacity":0}, 2000, function(){$i.remove();});     //动画消除
     e.stopPropagation();
 })
 
@@ -254,21 +286,49 @@ $("#send-text").on("input propertychange", function () {
 //图片上传
 $("#img-upload").on("change", function (e) {
     var file = e.currentTarget.files[0]
-    var fd = FormData()
-    df.append("file", file)
+    if(file == null || file == ""){
+        alert("图片为空")
+        return
+    }
+    var fd = new FormData()
+    fd.append("file", file)
+    fd.append("cUid", USER_UID)
+    fd.append("cType", 1)
+    fd.append("cCreatedTime", new Date().getTime())
+    fd.append("nickName", USER_NICKNAME)
+    console.log(fd)
     $.ajax({
         type: "post",
-        url: "",
+        url: "/img/upload",
         data: fd,
         dataType: "json",
         processData: false,  // processData和contentType需设置为false
         contentType: false,
         success: function (result) {
-
+            if(result.code == 200){
+                var imgVo = result.data
+                console.log(imgVo)
+                ws.send(JSON.stringify({
+                    id: USER_UID,
+                    msg: imgVo.msg,
+                    nickName: USER_NICKNAME,
+                    type: imgVo.type,
+                    time: imgVo.time
+                }))
+                $("#content").append(
+                    "<div style='clear:both'><div class='my-div'>"
+                    + "<span class='my-name-span'>" + imgVo.nickName + "</span>"
+                    + "<span class='my-nbsp-span'>&nbsp;&nbsp;</span>"
+                    + "<img class='my-img' src='" + "http://" + localhost + imgVo.msg + "' time='" + timeStamp2String(imgVo.time) + "'/></div>"
+                )
+            }else{
+                console.log("图片上传错误:" + result)
+            }
         }
     })
 
 })
+
 
 changeWindow();
 createWebSocket(wsUrl);

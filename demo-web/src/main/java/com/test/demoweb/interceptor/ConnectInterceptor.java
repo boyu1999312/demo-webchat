@@ -1,6 +1,6 @@
 package com.test.demoweb.interceptor;
 
-import com.test.common.constant.Login;
+import com.test.common.constant.LoginFinal;
 import com.test.common.entity.UserBean;
 import com.test.common.util.CookieUtil;
 import com.test.common.util.JsonMapper;
@@ -9,7 +9,6 @@ import org.apache.juli.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.Cookie;
@@ -29,7 +28,7 @@ public class ConnectInterceptor implements HandlerInterceptor {
 
         String contextPath = request.getServletPath();
         log.info("url ---> " + contextPath);
-        Cookie cookie = CookieUtil.getCookie(Login.COOKIE_LOGIN_TOKEN, request);
+        Cookie cookie = CookieUtil.getCookie(LoginFinal.COOKIE_LOGIN_TOKEN, request);
         if("/".equals(contextPath)){
             if(cookie == null){
                 response.sendRedirect("/html/login");

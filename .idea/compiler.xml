@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="api-gateway" />
         <module name="common" />
+        <module name="demo-img" />
         <module name="demo-web" />
         <module name="heart-server" />
         <module name="hystrix-dashboard" />
@@ -20,9 +21,11 @@
       <module name="api-gateway" target="1.8" />
       <module name="common" target="1.8" />
       <module name="demo" target="1.8" />
+      <module name="demo-img" target="1.8" />
       <module name="demo-web" target="1.8" />
       <module name="heart-server" target="1.8" />
       <module name="hystrix-dashboard" target="1.8" />
+      <module name="img" target="1.8" />
       <module name="server" target="1.8" />
       <module name="turbine" target="1.8" />
       <module name="user" target="1.8" />
@@ -34,9 +37,11 @@
       <module name="api-gateway" options="-parameters" />
       <module name="common" options="-parameters" />
       <module name="demo" options="-parameters" />
+      <module name="demo-img" options="-parameters" />
       <module name="demo-web" options="-parameters" />
       <module name="heart-server" options="-parameters" />
       <module name="hystrix-dashboard" options="-parameters" />
+      <module name="img" options="-parameters" />
       <module name="server" options="-parameters" />
       <module name="turbine" options="-parameters" />
       <module name="user" options="-parameters" />

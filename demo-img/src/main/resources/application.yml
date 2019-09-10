@@ -1,0 +1,18 @@
+server:
+  port: 9401
+
+spring:
+  application:
+    name: img-server
+  profiles:
+    active: dev
+cu:
+  ip: localhost
+  port: 8001
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${cu.ip}:${cu.port}/eureka/
+  instance:
+    prefer-ip-address: true

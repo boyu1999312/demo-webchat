@@ -23,6 +23,7 @@
         <module>turbine</module>
         <module>demo-web</module>
         <module>heart-server</module>
+        <module>demo-img</module>
     </modules>
 
 

@@ -1,6 +1,7 @@
 package com.test.heartserver.server;
 
 
+import com.test.common.constant.MsgFinal;
 import com.test.common.util.JsonMapper;
 import com.test.common.vo.MsgVo;
 import lombok.Data;
@@ -69,7 +70,7 @@ public class WebSocketServer {
                     new MsgVo()
                             .setType(1)
                             .setMsg("连接成功！")
-                            .setTime(new Date())
+                            .setTime(System.currentTimeMillis())
             ));
         }catch (IOException e){
             log.error("websocket 异常");
@@ -97,7 +98,7 @@ public class WebSocketServer {
         MsgVo msgVo = JsonMapper.toObject(msg, MsgVo.class);
 
         //移除第100条消息
-        if(msgVo.getType() == 2){
+        if(msgVo.getType() == MsgFinal.TEXT_TYPE || msgVo.getType() == MsgFinal.IMG_TYPE){
             log.info("缓存了消息：" + msg);
             msgList.add(0, msg);
         }
@@ -112,7 +113,7 @@ public class WebSocketServer {
                             JsonMapper.toJson(msgVo
                             .setType(1)
                             .setMsg(null)
-                            .setTime(new Date())));
+                            .setTime(System.currentTimeMillis())));
                 }else {
                     item.sendMessage(msg);
                 }

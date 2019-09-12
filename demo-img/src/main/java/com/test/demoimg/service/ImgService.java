@@ -59,7 +59,7 @@ public class ImgService {
 
         File localFile = new File(newPath);
         if(!localFile.getParentFile().exists()){
-            localFile.mkdirs();
+            localFile.getParentFile().mkdirs();
         }
         if(!localFile.exists()){
 

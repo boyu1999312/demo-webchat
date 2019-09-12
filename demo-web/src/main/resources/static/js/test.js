@@ -3,7 +3,7 @@ var USER_NICKNAME = $("#sid").val();
 var USER_UID = $("#uId").val();
 
 var lockReconnect = false;//避免重复连接
-var wsUrl = "ws://server.natappfree.cc:36012/webServer/" + USER_UID;
+var wsUrl = "ws://server.natappfree.cc:39808/webServer/" + USER_UID;
 var ws;
 var tt;
 
@@ -11,7 +11,7 @@ var tt;
 var POP_OPEN = false;
 
 //当前域名
-var localhost = document.domain
+var localhost = location.host
 
 function createWebSocket() {
     try {
@@ -72,12 +72,12 @@ function init() {
                         ? "<div style='clear:both'><div class='my-div'>"
                         + "<span class='my-name-span'>" + result.nickName + "</span>"
                         + "<span class='my-nbsp-span'>&nbsp;&nbsp;</span>"
-                        + "<img class='my-img' src='" + "http://" + localhost + result.msg + "' time='" + timeStamp2String(result.time) + "'/></div>"
+                        + "<img class='my-img' src='" + "http://" + localhost + result.msg + "' imgtime='" + timeStamp2String(result.time) + "'/></div>"
 
                         : "<div style='clear:both'><div class='other-div'>"
                         + "<span class='other-name-span'>" + result.nickName
                         + "</span>" + "<span class='other-nbsp-span'>&nbsp;&nbsp;</span>"
-                        + "<img class='other-img' src='" + "http://" + localhost + result.msg + "' time='" + timeStamp2String(result.time) + "'/></div>"
+                        + "<img class='other-img' src='" + "http://" + localhost + result.msg + "' imgtime='" + timeStamp2String(result.time) + "'/></div>"
 
                     $("#content").append(cla)
                     var scrollHeight = $('#content').prop("scrollHeight");
@@ -161,7 +161,7 @@ function sendBtn() {
         $("#send-btn").hide(200)
 
         if(POP_OPEN){
-            var pop = $("#pop-img-div")
+            var pop = $("#pop-function-div")
             var content = $("#top-div")
             content.animate({bottom:'0'})
             pop.animate({top:'100%'})
@@ -214,7 +214,7 @@ $("#pop-a").on("click", function () {
         $("#send-text").focus()
     }
     POP_OPEN = true;
-    var pop = $("#pop-img-div")
+    var pop = $("#pop-function-div")
     var content = $("#top-div")
     content.animate({bottom:'50%'})
     pop.show()
@@ -222,7 +222,7 @@ $("#pop-a").on("click", function () {
 })
 //单击content-div
 $("#content").on("click",function () {
-    var pop = $("#pop-img-div")
+    var pop = $("#pop-function-div")
     var content = $("#top-div")
     if(POP_OPEN){
         content.animate({bottom:'0'})
@@ -233,52 +233,25 @@ $("#content").on("click",function () {
 })
 //单击pre(聊天气泡)显示发送时间
 $(document).click(function (e) {
-    var $v_id = $(e.target)
-    if($v_id.attr("time") == null || $v_id.attr("time") == ""){
-        return
-    }
-    var x = e.pageX
-    var y = e.pageY
-    var $i = $("<p></p>").text($v_id.attr("time"))
-    $i.css({
-        "font-size": "45px",
-        "z-index": 99999,
-        "top": y - 20,
-        "left": x,
-        "position": "absolute",
-        "color": "white",
-        "background": "black",
-        "border-radius": "15px",
-        "padding": "10px",
-        "cursor":"default",
-        "-moz-user-select": "none",
-        "-webkit-user-select": "none",
-        "-ms-user-select": "none",
-        "-khtml-user-select": "none",
-        "user-select": "none"
-    })
-    $("body").append($i)
-    $i.animate( {"top":y-180,"opacity":0}, 2000, function(){$i.remove();});     //动画消除
-    e.stopPropagation();
+
+    clickPreTime(e)
+    clickImgDiv(e)
 })
 
 //消息按钮弹出与缩回
 $("#send-text").on("input propertychange", function () {
     if(/^\s*$/.test($(this).val()) || $(this).val() == null){
         $("#send-btn").animate({width:'0'}, 200)
-        $("#send-btn").hide(200)
-
-        setTimeout(function () {
-            $("#plus-a").show(200)
+        $("#send-btn").hide(function () {
+            $("#plus-a").show()
             $("#plus-a").animate({width:'190'}, 200)
-        },100)
+        })
     }else {
         $("#plus-a").animate({width:'0'}, 200)
-        $("#plus-a").hide(200)
-        setTimeout(function () {
+        $("#plus-a").hide(function () {
             $("#send-btn").show()
             $("#send-btn").animate({width:'190'}, 200)
-        },100)
+        })
     }
 })
 
@@ -319,11 +292,14 @@ $("#img-upload").on("change", function (e) {
                     "<div style='clear:both'><div class='my-div'>"
                     + "<span class='my-name-span'>" + imgVo.nickName + "</span>"
                     + "<span class='my-nbsp-span'>&nbsp;&nbsp;</span>"
-                    + "<img class='my-img' src='" + "http://" + localhost + imgVo.msg + "' time='" + timeStamp2String(imgVo.time) + "'/></div>"
+                    + "<img class='my-img' src='" + "http://" + localhost + imgVo.msg + "' imgtime='" + timeStamp2String(imgVo.time) + "'/></div>"
                 )
             }else{
                 console.log("图片上传错误:" + result)
             }
+            $("#img-upload").val("")
+            var scrollHeight = $('#content').prop("scrollHeight");
+            $('#content').animate({scrollTop:scrollHeight}, 1000);
         }
     })
 
